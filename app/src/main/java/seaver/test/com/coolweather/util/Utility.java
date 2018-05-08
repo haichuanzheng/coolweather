@@ -1,6 +1,9 @@
 package seaver.test.com.coolweather.util;
 
 import android.text.TextUtils;
+import android.util.Log;
+
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -9,6 +12,7 @@ import org.json.JSONObject;
 import seaver.test.com.coolweather.db.City;
 import seaver.test.com.coolweather.db.County;
 import seaver.test.com.coolweather.db.Province;
+import seaver.test.com.coolweather.gson.Weather;
 
 /**
  * Created by zhenghaichuan on 18-5-7.
@@ -76,5 +80,16 @@ public class Utility {
             }
         }
         return false;
+    }
+    public static Weather handleWeatherResponse(String response){
+        try{
+            JSONObject jsonObject=new JSONObject(response);
+            JSONArray jsonArray=jsonObject.getJSONArray("HeWeather");
+            String weatherContent=jsonArray.getJSONObject(0).toString();
+            return new Gson().fromJson(weatherContent,Weather.class);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 }
